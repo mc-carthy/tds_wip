@@ -6,10 +6,13 @@ public class PlayerController : MonoBehaviour {
 	public float moveSpeed = 5f;
 
 	Vector3 mousePos;
+	Vector3 velocity;
 	Rigidbody2D rigidBody;
+	Controller2D controller;
 
 	void Start () {
 		rigidBody = GetComponent<Rigidbody2D> ();
+		controller = GetComponent<Controller2D> ();
 	}
 	
 	void Update () {
@@ -25,11 +28,13 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Move() {
-		float xMove = Input.GetAxisRaw ("Horizontal");
-		float yMove = Input.GetAxisRaw ("Vertical");
+		Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-		Vector3 velocity = new Vector3 (xMove, yMove).normalized;
 
-		transform.position += velocity * moveSpeed * Time.deltaTime;
+		velocity.x = input.x * moveSpeed;
+		velocity.y = input.y * moveSpeed;
+		controller.Move (velocity * Time.deltaTime);
 	}
+
+
 }
